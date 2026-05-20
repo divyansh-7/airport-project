@@ -1,0 +1,21 @@
+version: 2
+
+models:
+  - name: silver_baggage_tracking
+    description: "Cleansed and conformed tracking layer."
+    columns:
+      - name: PNR_LOCATOR
+        tests:
+          - not_null  # Fail if a streaming record lacks a booking ID
+          - relationships:
+              to: source('raw_airline_telemetry', 'BRONZE_B2B_JOINED')
+              field: PNR_LOCATOR
+      
+      - name: BAG_TAG_NUMBER
+        tests:
+          - not_null  # Fail if luggage tracking tag is missing
+          
+      - name: IS_LATE_BAGGAGE_SCAN
+        tests:
+          - accepted_values:
+              values: [true, false]  # Enforce binary boolean integrity

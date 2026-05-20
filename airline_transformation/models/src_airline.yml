@@ -1,0 +1,18 @@
+version: 2
+
+sources:
+  - name: raw_airline_telemetry
+    database: AIRLINE_DW
+    schema: TELEMETRY
+    tables:
+      - name: BRONZE_B2B_JOINED
+        description: "Raw streaming telemetry landing table containing joined baggage scans and passenger boarding events via Snowpipe."
+        columns:
+          - name: PNR_LOCATOR
+            description: "Passenger Name Record. The unique 6-character booking identifier."
+          - name: BAG_TAG_NUMBER
+            description: "The unique barcode string attached to a physical piece of luggage."
+          - name: BAGGAGE_TIME
+            description: "Timestamp when the baggage scanner captured the asset location."
+          - name: PASSENGER_TIME
+            description: "Timestamp when the passenger boarded or went through the gate."

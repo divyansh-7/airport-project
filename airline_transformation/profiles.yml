@@ -1,0 +1,19 @@
+airline_transformation:
+  target: dev
+  outputs:
+    dev:
+      type: snowflake
+      account: "{{ env_var('SNOWFLAKE_ACCOUNT') }}"
+      user: "{{ env_var('SNOWFLAKE_USER') }}"
+      password: "{{ env_var('SNOWFLAKE_PASSWORD') }}"
+      role: "{{ env_var('SNOWFLAKE_ROLE') }}"
+      
+      # The warehouse we provisioned via our Python IaC script
+      warehouse: AIRLINE_LOAD_WH
+      database: AIRLINE_DW
+      
+      # This isolates your development work from production
+      schema: TELEMETRY_SILVER 
+      
+      threads: 4
+      client_session_keep_alive: False

@@ -1,0 +1,4 @@
+.env
+.venv
+spark_checkpoints_aws
+s3_mock_bucket

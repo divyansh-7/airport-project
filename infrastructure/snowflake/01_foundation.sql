@@ -1,0 +1,14 @@
+-- Set the context
+USE ROLE ACCOUNTADMIN;
+
+-- 1. Create the Database and Schema
+CREATE DATABASE IF NOT EXISTS AIRLINE_DW;
+CREATE SCHEMA IF NOT EXISTS AIRLINE_DW.TELEMETRY;
+
+-- 2. Create the Compute Warehouse
+-- AUTO_SUSPEND = 60 is our FinOps rule: shut down after 1 minute of inactivity
+CREATE WAREHOUSE IF NOT EXISTS AIRLINE_LOAD_WH
+    WITH WAREHOUSE_SIZE = 'XSMALL'
+    AUTO_SUSPEND = 60
+    AUTO_RESUME = TRUE
+    INITIALLY_SUSPENDED = TRUE;

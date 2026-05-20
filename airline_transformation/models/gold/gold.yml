@@ -1,0 +1,13 @@
+version: 2
+
+models:
+  - name: gold_flight_performance
+    description: "Aggregated business KPIs for flight baggage performance."
+    columns:
+      - name: FLIGHT_NUMBER
+        tests:
+          - not_null
+          
+      - name: TOTAL_BAGS_TRACKED
+        tests:
+          - not_null

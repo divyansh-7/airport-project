@@ -1,0 +1,10 @@
+USE DATABASE AIRLINE_DW;
+USE SCHEMA TELEMETRY;
+
+-- Create the Serverless Pipe
+CREATE OR REPLACE PIPE snowpipe_airline_bronze
+    AUTO_INGEST = TRUE
+    AS
+    COPY INTO BRONZE_B2B_JOINED
+    FROM @s3_bronze_stage
+    MATCH_BY_COLUMN_NAME = CASE_INSENSITIVE;
