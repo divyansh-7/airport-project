@@ -10,7 +10,7 @@ airline_transformation:
       
       # The warehouse we provisioned via our Python IaC script
       warehouse: AIRLINE_LOAD_WH
-      database: AIRLINE_DW
+      database: COMPUTE_WH
       
       # This isolates your development work from production
       schema: TELEMETRY_SILVER 
