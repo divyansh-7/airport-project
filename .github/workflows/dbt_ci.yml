@@ -1,0 +1,43 @@
+name: dbt Continuous Integration
+
+# This triggers the pipeline every time you push to the main branch
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  run-and-test-dbt:
+    name: Run dbt Data Quality Tests
+    runs-on: ubuntu-latest
+    
+    # This securely pulls your GitHub secrets and exposes them as environment variables for dbt
+    env:
+      SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
+      SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
+      SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
+      
+    steps:
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: 🐍 Setup Python 3.10
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: 📦 Install dbt-snowflake
+        # Make sure this matches the version we used locally
+        run: pip install dbt-snowflake==1.11.5 
+
+      - name: 🔌 Verify Snowflake Connection
+        run: dbt debug --project-dir airline_transformation --profiles-dir airline_transformation
+
+      - name: 🏗️ Run dbt Models (Silver & Gold Layers)
+        run: dbt run --project-dir airline_transformation --profiles-dir airline_transformation
+
+      - name: 🛡️ Execute Data Quality Tests
+        run: dbt test --project-dir airline_transformation --profiles-dir airline_transformation
